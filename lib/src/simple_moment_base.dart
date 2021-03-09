@@ -8,18 +8,20 @@ import 'locales/en.dart';
 import 'identifier_position.dart';
 
 class Moment {
-  DateTime _date;
+  DateTime? _date;
   static ILocaleData _globalLocale = new LocaleEn();
-  ILocaleData _locale;
+  ILocaleData? _locale;
   static int monthPerQuarter = 3;
   static bool _useGlobalLocaleInFormat = false;
   bool _useLocaleInFormat = false;
 
   ILocaleData get usedLocale => _locale ?? _globalLocale;
-  DateTime get date => _date;
+  DateTime get date => _date!;
 
   Moment.now() {
     _date = new DateTime.now();
+    _locale = null;
+    _date = null;
   }
 
   /// Create a moment instance from Date
@@ -64,14 +66,14 @@ class Moment {
     int microseconds: 0,
   }) {
     var dateTime = DateTime(
-      _date.year + years,
-      _date.month + months + quarters * monthPerQuarter,
-      _date.day + days + weeks * DateTime.daysPerWeek,
-      _date.hour + hours,
-      _date.minute + minutes,
-      _date.second + seconds,
-      _date.millisecond + milliseconds,
-      _date.microsecond + microseconds,
+      _date!.year + years,
+      _date!.month + months + quarters * monthPerQuarter,
+      _date!.day + days + weeks * DateTime.daysPerWeek,
+      _date!.hour + hours,
+      _date!.minute + minutes,
+      _date!.second + seconds,
+      _date!.millisecond + milliseconds,
+      _date!.microsecond + microseconds,
     );
     return Moment.fromDateTime(dateTime);
   }
@@ -92,14 +94,14 @@ class Moment {
     int microseconds: 0,
   }) {
     var dateTime = DateTime(
-      _date.year - years,
-      _date.month - months - quarters * monthPerQuarter,
-      _date.day - days - weeks * DateTime.daysPerWeek,
-      _date.hour - hours,
-      _date.minute - minutes,
-      _date.second - seconds,
-      _date.millisecond - milliseconds,
-      _date.microsecond - microseconds,
+      _date!.year - years,
+      _date!.month - months - quarters * monthPerQuarter,
+      _date!.day - days - weeks * DateTime.daysPerWeek,
+      _date!.hour - hours,
+      _date!.minute - minutes,
+      _date!.second - seconds,
+      _date!.millisecond - milliseconds,
+      _date!.microsecond - microseconds,
     );
     return Moment.fromDateTime(dateTime);
   }
@@ -112,36 +114,36 @@ class Moment {
   /// String formattedDate = Moment.format("yyyy-mm-dd HH:mm");
   /// ```
   ///
-  String format(String pattern, {String localeOverride = null}) {
+  String format(String pattern, {String? localeOverride = null}) {
     if (_useGlobalLocaleInFormat ||
         _useLocaleInFormat ||
         localeOverride != null)
       return DateFormat(pattern, localeOverride ?? usedLocale.localeString)
-          .format(_date);
+          .format(_date!);
 
-    return DateFormat(pattern).format(_date);
+    return DateFormat(pattern).format(_date!);
   }
 
-  int get year => _date.year;
+  int get year => _date!.year;
 
   /// The quarter
-  int get quarter => (_date.month - 1) ~/ 3 + 1;
+  int get quarter => (_date!.month - 1) ~/ 3 + 1;
 
   /// The month
-  int get month => _date.month;
+  int get month => _date!.month;
 
   /// The day of the month
-  int get day => _date.day;
+  int get day => _date!.day;
 
   /// The day of the week
-  int get weekday => _date.weekday;
+  int get weekday => _date!.weekday;
 
   /// Compares the given date to the current one
   ///
   /// @param date The date to compare with the current one
   /// @returns an int
   int compareTo(DateTime date) {
-    return _date.compareTo(date);
+    return _date!.compareTo(date);
   }
 
   /// Sets the global locale
@@ -164,7 +166,7 @@ class Moment {
   }
 
   String toString() {
-    return _date.toString();
+    return _date!.toString();
   }
 
   String fromNow([bool withoutPrefixOrSuffix = false]) {
@@ -172,7 +174,7 @@ class Moment {
   }
 
   String from(DateTime date, [bool withoutPrefixOrSuffix = false]) {
-    Duration diff = date.difference(_date);
+    Duration diff = date.difference(_date!);
 
     String timeString = "";
 
